@@ -4,14 +4,15 @@ import time
 import json
 import requests
 from LLM_Model import predict
-def reccomend(buggy_code):
+def palm_reccomend(buggy_code):
   # api_key = "AIzaSyCuf-_Tq7gKStezexKTa2i2G8Ectg9xw8Q" #saachi key
   api_key = "AIzaSyBmjhopUEEOHLgBwvn0r36e3tsHUqOnEfA"
   time.sleep(3)
   prompt = {
-      "text": buggy_code + '''\nGive a recommendation for making this code more secure:\n
-              Give me the most important 3 points to secure this code.\n
-              Answer in three sentences only, and be specific.'''
+      "text": buggy_code
+    #    + '''\nGive a recommendation for making this code more secure:\n
+    #           Give me the most important 3 points to secure this code.\n
+    #           Answer in three sentences only, and be specific.'''
   }
 
   # Create JSON request body
@@ -48,7 +49,7 @@ def response_generator(prompt):
             "Do you need help?",
         ]
     )
-    response = reccomend(prompt)
+    response = palm_reccomend(prompt)
     for word in response.split():
         yield word + " "
         time.sleep(0.05)
@@ -75,6 +76,6 @@ if prompt := st.chat_input("What is up?"):
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
-        response = st.write_stream(predict(prompt))
+        response = st.write_stream(response_generator(prompt))
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})
