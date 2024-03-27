@@ -3,7 +3,7 @@ import random
 import time
 import json
 import requests
-
+from LLM_Model import predict
 def reccomend(buggy_code):
   # api_key = "AIzaSyCuf-_Tq7gKStezexKTa2i2G8Ectg9xw8Q" #saachi key
   api_key = "AIzaSyBmjhopUEEOHLgBwvn0r36e3tsHUqOnEfA"
@@ -75,6 +75,6 @@ if prompt := st.chat_input("What is up?"):
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
-        response = st.write_stream(response_generator(prompt))
+        response = st.write_stream(predict(prompt))
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})
