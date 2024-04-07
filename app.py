@@ -83,9 +83,9 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 # Display chat messages from history on app rerun
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+# for message in st.session_state.messages:
+#     with st.chat_message(message["role"]):
+#         st.markdown(message["content"])
 
 #secure = st.button("Secure")
 
@@ -114,23 +114,38 @@ optimize_secure_buttons = [
 ]
 
 
-st.write("")
-st.session_state.messages = [{"role": "assistant", "content": "Welcome to cost"}]
+# st.write("")
+# st.session_state.messages = [{"role": "assistant", "content": "Welcome to cost"}]
 if user_response := code_editor('''''', lang="python", buttons = optimize_secure_buttons):
     user_code = user_response["text"]
-    print(user_response)
+    # if "messages" not in st.session_state:
+    #     st.session_state.messages = []
+    # print(user_response)
     if user_response["type"].lower() == 'secure':
         response = codeT5_predict_secure(user_code)
-        #st.write(response)
+        # st.write(response)
         print(response)
         st.session_state.messages = [{"role": "assistant", "content": response}]
-    if user_response["type"].lower() == 'optimize':
+    elif user_response["type"].lower() == 'optimize':
         response = codeT5_predict_optimize(user_code)
-        #st.write(response)
+        # st.write(response)
         print(response)
         st.session_state.messages = [{"role": "assistant", "content": response}]
-    if user_response["type"].lower() == '':
-        st.session_state.messages = [{"role": "assistant", "content": "Welcome to cost"}]
+
+ 
+
+# Display chat messages from history on app rerun
+    for message in st.session_state.messages:
+      with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+    
+    # else:
+    #     # st.session_state.messages = [{"role": "assistant", "content": "Welcome to cost"}]
+    #     response = codeT5_predict_optimize(user_code)
+    #     #st.write(response)
+    #     print(response)
+    #     st.session_state.messages = [{"role": "assistant", "content": response}]
         
 
     #if user_response["type"].lower() == 'optimize':
