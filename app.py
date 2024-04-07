@@ -117,7 +117,7 @@ optimize_secure_buttons = [
 # st.write("")
 # st.session_state.messages = [{"role": "assistant", "content": "Welcome to cost"}]
 if user_response := code_editor('''''', lang="python", buttons = optimize_secure_buttons):
-    user_code = user_response["text"]
+    user_code = user_response["text"][:500]
     # if "messages" not in st.session_state:
     #     st.session_state.messages = []
     # print(user_response)
