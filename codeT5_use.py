@@ -7,8 +7,8 @@ instruct_secure = "\n Give a recommendation for making this code more secure: Gi
 instruct_optimize = "\n Give a recommendation for making this code more optimize: Give me the most important 3 points to optimize this code. Answer in three sentences only, and be specific"
 
 def codeT5_predict_secure(bad_code):
-    return model.predict(bad_code+instruct_secure)
+    return model.predict(bad_code+instruct_secure)[0]
 
 def codeT5_predict_optimize(bad_code):
-    return model.predict( bad_code + instruct_optimize )
+    return model.predict( bad_code + instruct_optimize )[0]
 

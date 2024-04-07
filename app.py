@@ -85,6 +85,7 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # Accept user input
+
 if prompt := st.chat_input("What is up?"):
     # Add user message to chat history
 
@@ -97,11 +98,15 @@ if prompt := st.chat_input("What is up?"):
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
         if 'secure' in prompt.lower():
-            response = st.write_stream(palm_secure(prompt))
+            response = codeT5_predict_secure(prompt)
+            st.write(codeT5_predict_secure(prompt))
         elif 'optimize' in prompt.lower():
-            response = st.write(palm_optimize(prompt))
+            response = codeT5_predict_optimize(prompt)
+            st.write(response)
         else:
-            response = st.write(palm_secure(prompt))
+            response = codeT5_predict_secure(prompt)
+            st.write(response)
+        # st.session_state.messages.append({"role": "assistant", "content": prompt})
     
     # Add assistant response to chat history
     st.session_state.messages.append({"role": "assistant", "content": response})
