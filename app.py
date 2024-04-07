@@ -3,9 +3,12 @@ from codeT5_use import codeT5_predict_optimize, codeT5_predict_secure
 from T5_use import T5_predict_optimize, T5_predict_secure
 import json
 import requests
+
+from code_editor import code_editor
+
 # Streamed response emulator
 
-st.title("Simple chat")
+st.title("C.O.S.T")
 
 def palm_optimize(buggy_code):
   # api_key = "AIzaSyCuf-_Tq7gKStezexKTa2i2G8Ectg9xw8Q" #saachi key
@@ -84,33 +87,80 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
+#secure = st.button("Secure")
+
+#st.code('''hello, world''', language="python", line_numbers=False)
+
+optimize_secure_buttons = [
+    {    
+         "name": "Secure", 
+         "hasText": True, 
+         "alwaysOn": True,
+         "commands": [["response", "Secure"]],
+         "feather": "Lock",
+         "style": {
+             "top": "0.46rem", 
+             "right": "0.4rem"
+         }
+    },
+    {
+         "name": "Optimize",
+         "hasText": True,
+         "alwaysOn": True,
+         "commands": [["response", "Optimize"]],
+         "feather": "TrendingUp",
+         "style": {"top": "0.46rem", "right": "6rem"}
+ },
+]
+
+
+st.write("")
+st.session_state.messages = [{"role": "assistant", "content": "Welcome to cost"}]
+if user_response := code_editor('''''', lang="python", buttons = optimize_secure_buttons):
+    user_code = user_response["text"]
+    print(user_response)
+    if user_response["type"].lower() == 'secure':
+        response = codeT5_predict_secure(user_code)
+        #st.write(response)
+        print(response)
+        st.session_state.messages = [{"role": "assistant", "content": response}]
+    if user_response["type"].lower() == 'optimize':
+        response = codeT5_predict_optimize(user_code)
+        #st.write(response)
+        print(response)
+        st.session_state.messages = [{"role": "assistant", "content": response}]
+    if user_response["type"].lower() == '':
+        st.session_state.messages = [{"role": "assistant", "content": "Welcome to cost"}]
+        
+
+    #if user_response["type"].lower() == 'optimize':
+
+
+#optimize = st.button("Optimize")
 # Accept user input
-
-
-
-
-if prompt := st.chat_input("Enter your code"):
-    # Add user message to chat history
-
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    # Display user message in chat message container
-    
-    with st.chat_message("user"):
-        st.code(prompt)
-
-    # Display assistant response in chat message container
-    with st.chat_message("assistant"):
-        if 'secure' in prompt.lower():
-            response = codeT5_predict_secure(prompt)
-            st.write(codeT5_predict_secure(prompt))
-        elif 'optimize' in prompt.lower():
-            response = codeT5_predict_optimize(prompt)
-            st.write(response)
-        else:
-            response = codeT5_predict_secure(prompt)
-            st.write(response)
-        # st.session_state.messages.append({"role": "assistant", "content": prompt})
-    
-    # Add assistant response to chat history
-    #working
-    st.session_state.messages.append({"role": "assistant", "content": response})
+#
+#if prompt := st.chat_input("What is up?"):
+#    # Add user message to chat history
+#
+#    st.session_state.messages.append({"role": "user", "content": prompt})
+#    # Display user message in chat message container
+#    
+#    with st.chat_message("user"):
+#        st.write(prompt)
+#
+#    # Display assistant response in chat message container
+#    with st.chat_message("assistant"):
+#        if 'secure' in prompt.lower():
+#            response = codeT5_predict_secure(prompt)
+#            st.write(codeT5_predict_secure(prompt))
+#        elif 'optimize' in prompt.lower():
+#            response = codeT5_predict_optimize(prompt)
+#            st.write(response)
+#        else:
+#            response = codeT5_predict_secure(prompt)
+#            st.write(response)
+#        # st.session_state.messages.append({"role": "assistant", "content": prompt})
+#    
+#    # Add assistant response to chat history
+#    #working
+#    st.session_state.messages.append({"role": "assistant", "content": response})
